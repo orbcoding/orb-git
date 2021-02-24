@@ -40,7 +40,8 @@ declare -A commitall_args=(
 }
 
 function pushall() {
-  :
+  git submodule foreach git push
+  git push
 }
 
 function has_uncommitted() {
