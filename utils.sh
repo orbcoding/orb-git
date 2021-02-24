@@ -31,7 +31,7 @@ function pullall() { # Pull all updates including submodules
 declare -A commitall_args=(
   ['1']='commit msg'
 ); function commitall() { #
-  git submodule foreach bash -c "orb git has_uncommitted && git add . && git commit -m \"$1\" || :"
+  git submodule foreach bash -c "orb git has_uncommitted && git add . && git commit -m \"$1\" || echo 'nothing new'"
 
   if orb git has_uncommitted; then
     git add .
