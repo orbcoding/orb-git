@@ -13,8 +13,8 @@ declare -A forget_args=(
 	fi;
 
 	if [[ $reply == 'y' ]]; then
-		echo "Forgetting ${path}"
-		git filter-branch --index-filter "git rm -rf --cached --ignore-unmatch ${path}" HEAD
+		echo "Forgetting $1"
+		git filter-branch --index-filter "git rm -rf --cached --ignore-unmatch $1" HEAD
 	fi
 }
 
