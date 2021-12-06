@@ -2,20 +2,12 @@ declare -A forget_args=(
   ['1']='file to forget'
 ); function forget() { # Completely forget file from local branch history (with confirmation prompt)
 	validate_is_repo
-	if [ -e "$1" ]; then
-		echo -n "Forget $1? y/n: "
-		local reply
-		read reply
-	else
-		orb core _raise_error +t "file not found"
-		echo 'file not found'
-		exit 1
-	fi;
+	[ -e "$1" ] || orb core _raise_error +t "file not found"
 
-	if [[ $reply == 'y' ]]; then
-		echo "Forgetting $1"
-		git filter-branch --index-filter "git rm -rf --cached --ignore-unmatch $1" HEAD
-	fi
+	_confirm "Forget $1?"
+
+	echo "Forgetting $1"
+	git filter-branch --index-filter "git rm -rf --cached --ignore-unmatch $1" HEAD
 }
 
 function validate_is_repo() { # Check if in git repo
