@@ -1,2 +1,2 @@
-# orb-cli-namespace-git
-orb-cli git namespace
+# orb-namespace-git
+orb git namespace

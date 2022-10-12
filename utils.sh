@@ -2,7 +2,7 @@ declare -A forget_args=(
   ['1']='file to forget'
 ); function forget() { # Completely forget file from local branch history (with confirmation prompt)
 	validate_is_repo
-	[ -e "$1" ] || orb core _raise_error +t "file not found"
+	[ -e "$1" ] || orb core orb_raise_error +t "file not found"
 
 	_confirm "Forget $1?"
 
@@ -12,7 +12,7 @@ declare -A forget_args=(
 
 function validate_is_repo() { # Check if in git repo
 	local validate_is_repo=$([ -d .git ] && echo .git || git rev-parse --git-dir > /dev/null 2>&1)
-	[[ -z "$validate_is_repo" ]] && orb core _raise_error 'not in git repo'
+	[[ -z "$validate_is_repo" ]] && orb core orb_raise_error 'not in git repo'
 }
 
 function pullall() { # Pull all updates including submodules
@@ -20,10 +20,11 @@ function pullall() { # Pull all updates including submodules
 }
 
 # commitall
-declare -A commitall_args=(
-  ['1']='commit msg'
-); function commitall() { #
-  git submodule foreach bash -c "orb git has_uncommitted && git add . && git commit -m \"$1\" || :"
+commitall_orb=(
+  1 = msg
+); 
+function commitall() {
+  git submodule foreach bash -c "orb git has_uncommitted && git add . && git commit -m \"$msg\" || :"
 
   if orb git has_uncommitted; then
     git add .
